@@ -66,6 +66,7 @@ function getVercelBin() {
 
 const vercelToken = core.getInput('vercel-token', { required: true });
 const vercelArgs = core.getInput('vercel-args');
+const vercelBuildArgs = core.getInput('vercel-build-args');
 const vercelPrebuild = core.getBooleanInput('prebuild');
 const vercelArchive = core.getBooleanInput('archive');
 const vercelOrgId = core.getInput('vercel-org-id');
@@ -146,6 +147,7 @@ async function vercelDeploy(ref, commit) {
   }
 
   const providedArgs = vercelArgs.split(/ +/);
+  const providedBuildArgs = vercelBuildArgs.split(/ +/);
 
   const argsBase = ['--yes', ...['-t', vercelToken]];
 
@@ -184,6 +186,7 @@ async function vercelDeploy(ref, commit) {
         vercelBin,
         'build',
         ...argsBase,
+        ...providedBuildArgs,
         ...(providedArgs.includes('--prod') ? ['--prod'] : []),
       ],
       {
