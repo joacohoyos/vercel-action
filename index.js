@@ -208,6 +208,7 @@ async function vercelDeploy(ref, commit) {
     }
   }
 
+  options.env = {...(options.env || {}), ...providedBuildArgs};
   await exec.exec('npx', [vercelBin, ...args], options);
 
   return myOutput;
