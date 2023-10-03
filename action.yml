@@ -8,6 +8,10 @@ inputs:
     description: ''
     required: false
     default: ''
+  vercel-build-args:
+    description: ''
+    required: false
+    default: ''
   prebuild:
     required: false
     default: 'true'
