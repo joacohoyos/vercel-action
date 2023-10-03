@@ -147,7 +147,10 @@ async function vercelDeploy(ref, commit) {
   }
 
   const providedArgs = vercelArgs.split(/ +/);
-  const providedBuildArgs = vercelBuildArgs.split(/ +/);
+  const providedBuildArgs = vercelBuildArgs.split(/ +/).reduce((acc, arg) => {
+    const [key, value] = arg.split('=');
+    return { ...acc, [key]: value };
+  }, {});
 
   const argsBase = ['--yes', ...['-t', vercelToken]];
 
@@ -186,12 +189,12 @@ async function vercelDeploy(ref, commit) {
         vercelBin,
         'build',
         ...argsBase,
-        ...providedBuildArgs,
         ...(providedArgs.includes('--prod') ? ['--prod'] : []),
       ],
       {
         env: {
           ...process.env,
+          ...providedBuildArgs,
         },
         ...(workingDirectory ? { cwd: workingDirectory } : null),
       },
