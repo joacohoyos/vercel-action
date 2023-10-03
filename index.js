@@ -177,12 +177,21 @@ async function vercelDeploy(ref, commit) {
   }
 
   if (vercelPrebuild) {
-    await exec.exec('npx', [vercelBin, 'build', ...argsBase], {
-      env: {
-        ...process.env,
+    await exec.exec(
+      'npx',
+      [
+        vercelBin,
+        'build',
+        ...argsBase,
+        ...(providedArgs.includes('--prod') ? ['--prod'] : []),
+      ],
+      {
+        env: {
+          ...process.env,
+        },
+        ...(workingDirectory ? { cwd: workingDirectory } : null),
       },
-      ...(workingDirectory ? { cwd: workingDirectory } : null),
-    });
+    );
     core.info('prebuilt');
     args.push('--prebuilt');
 
